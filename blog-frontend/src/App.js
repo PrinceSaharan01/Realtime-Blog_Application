@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Err404 from './components/Err404';
@@ -13,7 +15,12 @@ import UserState from './context/UserState';
 
 
 function App() {
+const seletct =  useSelector((state)=> state)
+useEffect(()=>{
 
+  console.log(seletct);
+
+},[seletct])
  
   return (
     <div className="App">

@@ -4,13 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import Update from './Update';
 import ScrollToBottom from 'react-scroll-to-bottom';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Spinner from '../spinner/Spinner.gif' 
+import Spinner from '../spinner/Spinner.gif'
+import { useSelector } from 'react-redux';
 
 const Home = () => {
     const navigate = useNavigate();
     const context = useContext(UserContext)
 
-    const { deleteComment, userComment, verifyComment, posts, sendPost, comments, userData } = context;
+    const { deleteComment, userComment, verifyComment, sendPost, userData } = context;
+    const posts = useSelector(s => s.post)
+    const comments = useSelector(s=>s.comment)
     const [content, setContent] = useState('')
     const [title, setTitle] = useState('')
     const [tag, setTag] = useState('')
@@ -19,13 +22,16 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
 
 
+ 
+
+
     useEffect(() => {
         const authenticate = localStorage.getItem('auth');
         if (!authenticate) {
             navigate('/')
         }
-        userData();
         userComment();
+        userData();
         setLoading(true);
     }, [])
 
@@ -67,12 +73,13 @@ const Home = () => {
             // setItems(items+10);
             // console.log(items);
             setLoading(false)
-            
+
 
         }
+       
         else {
             setTimeout(() => {
-                
+
                 setItems((pre) => pre + 1);
                 setLoading(true)
             }, 1000);
@@ -110,12 +117,9 @@ const Home = () => {
                     dataLength={items}
                     next={fetchMore}
                     hasMore={loading}
-                    loader={<img style={{height:'80px'}} src={Spinner}></img>}
-                
+                    loader={<img style={{ height: '80px' }} src={Spinner}></img>}
+
                 >
-
-
-
                     {
 
                         posts.slice(0, items).map((p) => {

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import UserContext from './UserContext'
 import { io } from 'socket.io-client';
+import { useDispatch } from 'react-redux';
+import { deletePost as deleteAction, createPost, fetchPost, updatePost } from '../redux/posts/postActions';
+import { deleteComment as deleteCmnt ,createComment,fetchComment ,approveComment } from '../redux/comments/commentsActions';
 
 function UserState(props) {
-  const [posts, setPosts] = useState([])
-  const [comments, setComments] = useState([])
+  const dispatch = useDispatch();
 
   const socket = io.connect('http://localhost:7878')
 
@@ -12,31 +14,33 @@ function UserState(props) {
 
     const callback = (data) => {
 
-      setPosts((posts) => [data, ...posts]);
+      // setPosts((posts) => [data, ...posts]);
+      dispatch(createPost(data))
 
     };
     socket.on("fetch", callback);
 
     socket.on('deleted', (id) => {
-      setPosts((posts) => posts.filter((post) => post.id !== id));
-      console.log(`${id} deleted`);
+      //  console.log(deletePost()); 
+      dispatch(deleteAction(id));
+      // setPosts((posts) => posts.filter((post) => post.id !== id));
+
     });
 
     socket.on('updated', (data) => {
-      setPosts((p) => p.map((post) => { return data.id === post.idx ? data : post }))
+      // setPosts((p) => p.map((post) => { return data.id === post.id ? data : post }))
+      dispatch(updatePost(data))
 
     })
-
-
     socket.on('verified_comment', (data) => {
-      setComments((p) => p.map((comment) =>  {return data.id === comment.id ? data : comment} ))
+      dispatch(approveComment(data))
     })
     socket.on('delete_confirmed', (id) => {
-      setComments((comments) => comments.filter((coment) => coment.id !== id))
+      dispatch(deleteCmnt(id))
     })
 
     const callback2 = (data) => {
-      setComments((comments) => [...comments, data])
+      dispatch(createComment(data))
     }
 
     socket.on('verify', callback2);
@@ -58,11 +62,8 @@ function UserState(props) {
 
     const data = await fetch('http://localhost:7878/data/posts');
     const result = await data.json();
-    setPosts(result)
+    dispatch(fetchPost(result))
 
-    // socket.on('user', (data) => {
-    //   setPosts(data);
-    // })
 
 
   }
@@ -70,7 +71,9 @@ function UserState(props) {
 
     const data = await fetch('http://localhost:7878/data/comments');
     const result = await data.json();
-    setComments(result);
+    console.log(result);
+    dispatch(fetchComment(result))
+    console.log(result);
     // socket.on('comments', (data) => {
     //   setComments(data);
     // })
@@ -79,7 +82,6 @@ function UserState(props) {
 
   const commentData = () => {
     socket.on('comments', (data) => {
-      setPosts(data);
       console.log(data);
     })
   }
@@ -119,10 +121,17 @@ function UserState(props) {
   }
 
   return (
-    <UserContext.Provider value={{userComment, verifyComment, deleteComment, commentData, emitComment, updateDB, deletePost, userData, posts, comments, joinSocket, sendPost }}>
+    <UserContext.Provider value={{ userComment, verifyComment, deleteComment, commentData, emitComment, updateDB, deletePost, userData, joinSocket, sendPost }}>
       {props.children}
     </UserContext.Provider>
   )
 }
 
 export default UserState;
+
+//getcomments/1?limint=100&page=2
+
+//1000
+
+//(limint , page )
+// list = [....1000] / 10 = 1000 = 0-100 , 100-200

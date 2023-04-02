@@ -4,16 +4,16 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import UserContext from '../context/UserContext'
 import Comments from './Comments';
 import Spinner from '../spinner/Spinner.gif'
+import { useSelector } from 'react-redux';
 
 
 const Posts = () => {
   const context = useContext(UserContext);
-  const { userComment, comments, posts, userData } = context;
+  const { userComment,userData } = context;
+  const posts = useSelector(s=>s.post)
+  const comments = useSelector(s=>s.comment)
   const [items, setItems] = useState(5);
   const [loading, setLoading] = useState(false);
-
-
-
 
 
   useEffect(() => {
@@ -71,13 +71,14 @@ const Posts = () => {
             {
               posts.filter((post) => post.status === 'Post').slice(0, items).map((p) => {
 
-                const cumm = comments.filter((c) => {
-                  return p.id === c.post_id && p.status === c.status
-
-                })
-                return {
-                  ...p, comments: cumm
-                }
+                  
+                  const cumm = comments.filter((c) => {
+                    return p.id === c.post_id && p.status === c.status
+                    
+                  })
+                  return {
+                    ...p, comments: cumm
+                  }
               }).map((post, k = 0) => {
                 return (
                   <div key={k} className='mx-4'>
