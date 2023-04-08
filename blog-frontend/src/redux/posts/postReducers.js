@@ -9,7 +9,7 @@ const postReducer = (state = [], action) => {
         case fetch_posts:
             return [...action.payload]
         case create_post:
-            return [...state, action.payload]
+            return [action.payload , ...state]
         case update_post:
             return [...state.map((post) => { return action.payload.id === post.id ? action.payload : post })]
         case delete_post:

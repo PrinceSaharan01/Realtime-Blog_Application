@@ -56,7 +56,7 @@ function Signup() {
                 })
                 const data = await result.json();
                 if (data.auth) {
-                    navigate('/home')
+                    // navigate('/home')
                     // localStorage.setItem("username", JSON.stringify(username))
                     localStorage.setItem("auth", JSON.stringify(data.auth));
                     localStorage.setItem('username',JSON.stringify(data.username))

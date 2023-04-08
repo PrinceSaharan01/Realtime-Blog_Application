@@ -8,11 +8,13 @@ const Update = (props) => {
     const k = props.index;
     const { deletePost , updateDB  } = context;
     const [show, setShow] = useState(false);
-    const [sat,setSat] = useState('');
-    const [val,setVal] = useState('');  
+    const [sat,setSat] = useState('Post');
+    const [val,setVal] = useState(content);  
 
     const update =(e)=>{
         e.preventDefault();
+        console.log(sat);
+        console.log(val);
         if(!sat||!val){
             alert('Check Empty Fields')
         }
@@ -24,8 +26,7 @@ const Update = (props) => {
                 vall:val
             }
             setShow(false);
-            setSat('');
-            setVal('');
+            setSat('Post')
             updateDB(data);
 
         }
@@ -43,9 +44,20 @@ const Update = (props) => {
             {
                 show &&
 
-                <div>
-                    <input onChange={(e)=>{setVal(e.target.value)}} value={val} placeholder={`${content}`}></input><br></br>
-                    <input onChange={(e)=>{setSat(e.target.value)}} value={sat} placeholder={`${status}`}></input><br></br>
+                <div >
+                    <input className='form-control' onChange={(e)=>{setVal(e.target.value)}} value={val} placeholder={`${content}`}></input><br></br>
+                    {/* <input onChange={(e)=>{setSat(e.target.value)}} value={sat} placeholder={`${status}`}></input><br></br> */}
+                    <div className='form-group mb-4'>
+                       
+
+                        <select  className='form-control' onChange={(e)=>{setSat(e.target.value)}}>
+                            <option value='Post'>Post</option>
+                            <option value='Pending'>Pending</option>
+                            <option value='Archive'>Archive</option>
+
+                        </select>
+                        
+                    </div>
 
                     {/* <i className="fa-duotone fa-check-double"></i> */}
                     <i onClick={update} className="fa-regular fa-square-check"></i>

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Err404 from './components/Err404';
 import Guest from './components/Guest';
@@ -24,7 +24,10 @@ useEffect(()=>{
  
   return (
     <div className="App">
-      <HashRouter>
+      {/* <HashRouter> */}
+        <BrowserRouter>
+        
+    
         <UserState>
           <Navbar></Navbar>
         <Routes>
@@ -47,7 +50,8 @@ useEffect(()=>{
 
         </Routes>
         </UserState>
-      </HashRouter>
+        </BrowserRouter>
+      {/* </HashRouter> */}
     </div>
   );
 }

@@ -17,7 +17,7 @@ const Home = () => {
     const [content, setContent] = useState('')
     const [title, setTitle] = useState('')
     const [tag, setTag] = useState('')
-    const [status, setStatus] = useState('')
+    const [status, setStatus] = useState('Post')
     const [items, setItems] = useState(5);
     const [loading, setLoading] = useState(true);
 
@@ -60,7 +60,7 @@ const Home = () => {
             sendPost(data);
 
             setContent('');
-            setStatus('');
+            setStatus('Post');
             setTag('');
             setTitle('')
         }
@@ -104,8 +104,19 @@ const Home = () => {
                     <div className="form-group mb-3">
                         <input value={tag} onChange={(e) => setTag(e.target.value)} className="form-control" placeholder="Tags"></input>
                     </div>
-                    <div className="form-group mb-3">
+                    {/* <div className="form-group mb-3">
                         <input value={status} onChange={(e) => setStatus(e.target.value)} className="form-control" placeholder="Status:--Pending/Post"></input>
+                    </div> */}
+
+
+                    <div className='form-group mb-3'>
+                        <select  className='form-control' onChange={(e)=>{setStatus(e.target.value)}}> 
+                            <option value='Post'>Post</option>
+                            <option value='Pending'>Pending</option>
+                            <option value='Archive'>Archive</option>
+
+                        </select>
+                        
                     </div>
 
                     <button onClick={postSend} type="submit" className="btn btn-primary">Post</button>

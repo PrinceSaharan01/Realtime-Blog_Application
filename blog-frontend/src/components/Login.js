@@ -8,11 +8,16 @@ function Login() {
 
     useEffect(() => {
         const authenticate = localStorage.getItem('auth');
+        const username = localStorage.getItem('username')
         // const user = localStorage.getItem('username')
         if (authenticate) {
             navigate('/home')
 
         }
+        else if(username){
+            navigate('/posts')
+        }
+        
     })
 
     const login = async (e) => {
